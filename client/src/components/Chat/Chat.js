@@ -10,6 +10,7 @@ import Input from '../Input/Input';
 import './Chat.css';
 
 let socket;
+const ENDPOINT = process.env.REACT_APP_ENDPOINT;
 
 const Chat = ({ location }) => {
     const [name, setName] = useState('');
@@ -17,7 +18,6 @@ const Chat = ({ location }) => {
     const [users, setUsers] = useState('');
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const ENDPOINT = process.env.REACT_APP_ENDPOINT;
 
     useEffect(() => {
         const { name, room } = queryString.parse(location.search);
@@ -30,7 +30,7 @@ const Chat = ({ location }) => {
                 alert(error);
             }
         });
-    }, [ENDPOINT, location.search]);
+    }, [location.search]);
 
     useEffect(() => {
         socket.on('message', message => {
