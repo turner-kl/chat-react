@@ -7,7 +7,7 @@ const Join = () => {
     const [name, setName] = useState('');
     const [room, setRoom] = useState('');
 
-    const onClick = (event) => (!name || !room) ? event.preventDefault() : null;
+    const onClick = (event:React.MouseEvent<HTMLAnchorElement>) => (!name || !room) ? event.preventDefault() : null;
 
     return (
         <div className="joinOuterContainer" >
