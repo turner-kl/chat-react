@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import './Input.css';
 
-const Input = ({ setMessage, sendMessage, message }) => (
+type Props = {
+  setMessage: (value: string) => void;
+  sendMessage: (
+    event:
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.KeyboardEvent<HTMLInputElement>,
+  ) => void;
+  message: string;
+};
+
+const Input: FC<Props> = ({ setMessage, sendMessage, message }) => (
   <form className="form">
     <input
       className="input"
