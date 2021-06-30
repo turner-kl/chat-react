@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import queryString from 'query-string';
-import io from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
+import { RouteComponentProps } from 'react-router-dom';
 
 import TextContainer from '../TextContainer/TextContainer';
 import Messages from '../Messages/Messages';
@@ -9,29 +10,32 @@ import Input from '../Input/Input';
 
 import './Chat.css';
 
-let socket;
-const ENDPOINT = process.env.REACT_APP_ENDPOINT;
+let socket: Socket;
+const ENDPOINT = process.env.REACT_APP_ENDPOINT ?? '';
 
-const Chat = ({ location }) => {
+const Chat: FC<RouteComponentProps> = ({ location }) => {
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
-  const [users, setUsers] = useState('');
+  const [users, setUsers] = useState<{ name: string }[]>([]);
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
     const { name, room } = queryString.parse(location.search);
+    if (typeof room !== 'string' || typeof name !== 'string') return;
     setRoom(room);
     setName(name);
 
     socket = io(ENDPOINT);
-    socket.emit('join', { name, room }, (error) => {
+    socket.emit('join', { name, room }, (error: Error) => {
       if (error) {
         alert(error);
       }
     });
 
-    return () => socket.emit('disconnect');
+    return () => {
+      socket.emit('disconnect');
+    };
   }, [location.search]);
 
   useEffect(() => {
@@ -44,7 +48,11 @@ const Chat = ({ location }) => {
     });
   }, []);
 
-  const sendMessage = (event) => {
+  const sendMessage = (
+    event:
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.KeyboardEvent<HTMLInputElement>,
+  ) => {
     event.preventDefault();
 
     if (message) {
