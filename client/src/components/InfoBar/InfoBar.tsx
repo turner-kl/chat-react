@@ -12,7 +12,7 @@ type Props = {
 const InfoBar: FC<Props> = ({ room }) => (
   <div className="infoBar">
     <div className="leftInnerContainer">
-      <img className="onlineIcon" src={onlineIcon} alt="online"></img>
+      <img className="onlineIcon" src={onlineIcon} alt="online" />
       <h3>{room}</h3>
     </div>
     <div className="rightInnerContainer">
