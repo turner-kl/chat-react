@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import onlineIcon from '../../icons/onlineIcon.png';
 
 import './TextContainer.css';
 
-const TextContainer = ({ users }) => (
+type Props = {
+  users: { name: string }[];
+};
+
+const TextContainer: FC<Props> = ({ users }) => (
   <div className="textContainer">
     <div>
       <h1>
