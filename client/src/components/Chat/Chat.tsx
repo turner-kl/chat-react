@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import queryString from 'query-string';
 import { io, Socket } from 'socket.io-client';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, useLocation } from 'react-router-dom';
 
 import TextContainer from '../TextContainer/TextContainer';
 import Messages from '../Messages/Messages';
@@ -13,7 +13,8 @@ import './Chat.css';
 let socket: Socket;
 const ENDPOINT = process.env.REACT_APP_ENDPOINT ?? '';
 
-const Chat: FC<RouteComponentProps> = ({ location }) => {
+const Chat: FC<RouteComponentProps> = () => {
+  const location = useLocation();
   const [name, setName] = useState('');
   const [room, setRoom] = useState('');
   const [users, setUsers] = useState<{ name: string }[]>([]);
@@ -39,7 +40,7 @@ const Chat: FC<RouteComponentProps> = ({ location }) => {
   }, [location.search]);
 
   useEffect(() => {
-    socket.on('message', (message) => {
+    socket.on('message', (message: string) => {
       setMessages((messages) => [...messages, message]);
     });
 
